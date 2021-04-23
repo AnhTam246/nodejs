@@ -36,30 +36,13 @@ module.exports.create = (req, res) => {
 };
 
 module.exports.postCreate = (req, res) => {
-    var errors = [];
-    if(!req.body.name) {
-        errors.push("Name is required");
-    }
-
-    if(!req.body.age) {
-        errors.push("Age is required");
-    }
-
-    if(errors.length) {
-        let responseHandle = {
-            data: errors,
-            message: "Invalid",
-            status: 200,
-            isSuccess: false
-        }
-        res.send(responseHandle);
-        return;
-    }
     //Insert a record in the "users" table:
     var sql = "INSERT INTO users (name, age) VALUES ('"+req.body.name+"', '"+req.body.age+"')";
     connection.query(sql, function (err, result) {
         if (err) throw err;
         console.log("1 record inserted");
+        //Send variable from function middleware
+        console.log(res.locals);
 
         let responseHandle = {
             data: result.insertId,
