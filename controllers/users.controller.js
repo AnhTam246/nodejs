@@ -1,18 +1,22 @@
 const connection = require('../config');
 
 module.exports.index = (req, res) => {   
-    var sql = "SELECT * FROM users";
-    connection.query(sql, function(err, results) {
-        if (err) throw err;
+    try {
+        var sql = "SELECT * FROM users";
+        connection.query(sql, function(err, results) {
+            if (err) throw err;
 
-        let responseHandle = {
-            data: results,
-            message: "Request Success",
-            status: 200,
-            isSuccess: true
-        }
-        res.send(responseHandle);
-    });
+            let responseHandle = {
+                data: results,
+                message: "Request Success",
+                status: 200,
+                isSuccess: true
+            }
+            res.send(responseHandle);
+        });
+    } catch (error) {
+        return res.status(500).json(error);
+    }
 };
 
 module.exports.search = (req, res) => {
