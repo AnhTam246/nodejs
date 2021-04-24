@@ -1,4 +1,4 @@
-const connection = require('../config')
+const connection = require('../../config')
 // const jwt = require("jsonwebtoken");
 const dotenv = require('dotenv');
 
@@ -14,7 +14,7 @@ dotenv.config();
 // access config var
 process.env.TOKEN_SECRET;
 
-module.exports.postLogin = (req, res) => {
+const postLogin = (req, res) => {
     try {
         var sql = "SELECT * FROM users WHERE name = ? AND password = ?";
         connection.query(sql, [req.body.name, req.body.password], function(err, results) {
@@ -43,4 +43,8 @@ module.exports.postLogin = (req, res) => {
     } catch (error) {
         return res.status(500).json(error);
     }
+};
+
+module.exports = {
+    postLogin: postLogin
 };

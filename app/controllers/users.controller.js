@@ -1,46 +1,48 @@
-const connection = require('../config');
+const connection = require('../../config');
+const userModel = require('../models/users.model');
 
-module.exports.index = (req, res) => {   
+const index = (req, res) => {   
     try {
-        console.log(res.locals.user);
-        var sql = "SELECT * FROM users";
-        connection.query(sql, function(err, results) {
-            if (err) throw err;
-
-            let responseHandle = {
-                data: results,
-                message: "Request Success",
-                status: 200,
-                isSuccess: true
-            }
-            res.send(responseHandle);
-        });
-    } catch (error) {
-        return res.status(500).json(error);
-    }
-};
-
-module.exports.search = (req, res) => {
-    let q = req.query.q;
-    var sql = "SELECT * FROM users WHERE name like '%" + q + "%'";
-    connection.query(sql, function(err, results) {
-        if (err) throw err;
+        //console.log(res.locals.user);
+        let users = userModel.list();
 
         let responseHandle = {
-            data: results,
+            data: users,
             message: "Request Success",
             status: 200,
             isSuccess: true
         }
         res.send(responseHandle);
-    });
+    } catch (error) {
+        return res.status(500).json(error);
+    }
 };
 
-module.exports.create = (req, res) => {
+const search = (req, res) => {
+    try {
+        let name = req.query.name;
+        let responseHandle = {
+            data: [],
+            message: "Request Success",
+            status: 200,
+            isSuccess: true
+        }
+
+        userModel.listSearch(name).then((result) => {
+            responseHandle.data = result;
+            res.send(responseHandle);
+        });
+      
+    } catch (error) {
+        return res.status(500).json(error);
+    }
+};
+
+const create = (req, res) => {
     res.render('users/create')
 };
 
-module.exports.postCreate = (req, res) => {
+const postCreate = (req, res) => {
     //Insert a record in the "users" table:
     var sql = "INSERT INTO users (name, age) VALUES ('"+req.body.name+"', '"+req.body.age+"')";
     connection.query(sql, function (err, result) {
@@ -60,7 +62,7 @@ module.exports.postCreate = (req, res) => {
     });
 };
 
-module.exports.getUser = (req, res) => {
+const getUser = (req, res) => {
     let id = req.params.id;
 
     var sql = "SELECT * FROM users WHERE id = " + id;
@@ -82,4 +84,12 @@ module.exports.getUser = (req, res) => {
 
         res.send(responseHandle);
     });
+};
+
+module.exports = {
+    index: index,
+    search: search,
+    create: create,
+    postCreate: postCreate,
+    getUser: getUser
 };

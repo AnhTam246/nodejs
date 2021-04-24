@@ -1,7 +1,7 @@
 const jwtHelper = require("../helpers/jwt.helper");
 const accessTokenSecret = process.env.TOKEN_SECRET || "09f26e402586e2faa8da4c98a35f1b20d6b033c60";
 
-module.exports.isAuth = (req, res, next) => {
+const isAuth = (req, res, next) => {
     const tokenFromClient = req.body.token || req.query.token || req.headers["x-access-token"];
     
     if (tokenFromClient) {
@@ -27,3 +27,7 @@ module.exports.isAuth = (req, res, next) => {
         });
     }
 }
+
+module.exports = {
+    isAuth: isAuth
+};
