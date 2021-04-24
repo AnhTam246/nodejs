@@ -2,6 +2,7 @@ const connection = require('../config');
 
 module.exports.index = (req, res) => {   
     try {
+        console.log(res.locals.user);
         var sql = "SELECT * FROM users";
         connection.query(sql, function(err, results) {
             if (err) throw err;

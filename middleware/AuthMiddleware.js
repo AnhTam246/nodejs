@@ -9,7 +9,8 @@ module.exports.isAuth = (req, res, next) => {
             // Decode
             const decoded = jwtHelper.verifyToken(tokenFromClient, accessTokenSecret);
             // Save token
-            req.jwtDecoded = decoded;
+            // req.jwtDecoded = decoded;
+            res.locals.user = decoded;
 
             next();
         } catch (error) {
