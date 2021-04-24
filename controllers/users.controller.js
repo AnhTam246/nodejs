@@ -1,4 +1,4 @@
-const connection = require('../connection');
+const connection = require('../config');
 
 module.exports.index = (req, res) => {   
     var sql = "SELECT * FROM users";

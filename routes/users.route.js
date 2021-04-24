@@ -1,10 +1,11 @@
 const express = require('express')
 const router = express.Router()
 
-const controller = require('../controllers/user.controller')
+const controller = require('../controllers/users.controller')
 const validate = require('../validates/users.validate')
+const authMiddleWare = require('../middleware/AuthMiddleware')
 
-router.get('/', controller.index);
+router.get('/', authMiddleWare.isAuth, controller.index);
 
 router.get('/search', controller.search);
 
