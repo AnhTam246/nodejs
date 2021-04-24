@@ -1,63 +1,49 @@
-const connection = require('../../config');
 const userModel = require('../models/users.model');
 
-const index = (req, res) => {   
-    try {
-        //console.log(res.locals.user);
-        let users = userModel.list();
-
+const index = (req, res) => {
+    userModel.list(function(err, response) {
+        if (err) throw err;
         let responseHandle = {
-            data: users,
+            data: response,
             message: "Request Success",
             status: 200,
             isSuccess: true
         }
         res.send(responseHandle);
-    } catch (error) {
-        return res.status(500).json(error);
-    }
-};
+    });
+}
 
 const search = (req, res) => {
-    try {
-        let name = req.query.name;
+    let name = req.query.name;
+    userModel.listSearch(name, function(err, response) {
+        if (err) throw err;
         let responseHandle = {
-            data: [],
+            data: response,
             message: "Request Success",
             status: 200,
             isSuccess: true
         }
-
-        userModel.listSearch(name).then((result) => {
-            responseHandle.data = result;
-            res.send(responseHandle);
-        });
-      
-    } catch (error) {
-        return res.status(500).json(error);
-    }
-};
-
-const create = (req, res) => {
-    res.render('users/create')
-};
+        res.send(responseHandle);
+    });
+}
 
 const postCreate = (req, res) => {
-    //Insert a record in the "users" table:
-    var sql = "INSERT INTO users (name, age) VALUES ('"+req.body.name+"', '"+req.body.age+"')";
-    connection.query(sql, function (err, result) {
-        if (err) throw err;
-        console.log("1 record inserted");
-        //Send variable from function middleware
-        console.log(res.locals);
+    let params = [
+        req.body.name,
+        req.body.age,
+        req.body.password
+    ];
 
+    //Insert a record in the "users" table:
+    userModel.postCreate(params, function(err, response) {
+        if (err) throw err;
         let responseHandle = {
-            data: result.insertId,
+            data: response.insertId,
             message: "Create Success",
             status: 200,
             isSuccess: true
         }
-    
+        console.log(responseHandle);
         res.send(responseHandle);
     });
 };
@@ -65,18 +51,16 @@ const postCreate = (req, res) => {
 const getUser = (req, res) => {
     let id = req.params.id;
 
-    var sql = "SELECT * FROM users WHERE id = " + id;
-    connection.query(sql, function(err, results) {
+    userModel.getUserById(id, function(err, response) {
         if (err) throw err;
-
         let responseHandle = {
-            data: results[0],
+            data: response,
             message: "Request Success",
             status: 200,
             isSuccess: true
         }
 
-        if(!results.length) {
+        if(!response) {
             responseHandle.data = "Can't find id";
             responseHandle.message = "Invalid id";
             responseHandle.isSuccess = false;
@@ -89,7 +73,6 @@ const getUser = (req, res) => {
 module.exports = {
     index: index,
     search: search,
-    create: create,
     postCreate: postCreate,
     getUser: getUser
 };

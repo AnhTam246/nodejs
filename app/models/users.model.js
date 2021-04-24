@@ -1,32 +1,49 @@
 const db = require('./database')
 
-// let data = [];
-
-const list = () => {
-    var sql = `SELECT * FROM users`;
-    db.query(sql, function(err, results) {
+const list = (result) => {
+    let sql = "SELECT * FROM users";
+    db.query(sql, (err, res) => {
         if (err) throw err;
 
-        data = results;
-    });
-
-    return data;
+        console.log('users : ', res);
+        result(null, res);
+    })
 }
 
-const listSearch = (name) => {
-    return new Promise((resolve, reject) => {
-        let sql = "SELECT * FROM users WHERE name like '%" + name + "%'";
-        db.query(sql, (err, rows) => {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(rows);
-            }
-        });
+const listSearch = (name, result) => {
+    let sql = "SELECT * FROM users WHERE name like '%" + name + "%'";
+    db.query(sql, (err, res) => {
+        if (err) throw err;
+
+        console.log('users : ', res);
+        result(null, res);
+    })
+}
+
+const postCreate = (params, result) => {
+    //Insert a record in the "users" table:
+    var sql = "INSERT INTO users (name, age, password) VALUES (?, ?, ?)";
+    db.query(sql, params, (err, res) => {
+        if (err) throw err;
+        console.log("1 record inserted");
+
+        result(null, res);
     });
+}
+
+const getUserById = (userId, result) => {
+    let sql = "SELECT * FROM users WHERE id = ?";
+    db.query(sql, userId , (err, res) => {
+        if (err) throw err;
+
+        console.log('users : ', res[0]);
+        result(null, res[0]);
+    })
 }
 
 module.exports = {
     list: list,
-    listSearch: listSearch
+    listSearch: listSearch,
+    postCreate: postCreate,
+    getUserById: getUserById
 };

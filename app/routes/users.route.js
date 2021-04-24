@@ -7,13 +7,10 @@ const authMiddleWare = require('../middleware/AuthMiddleware')
 
 router.get('/', authMiddleWare.isAuth, controller.index);
 
-router.get('/search', controller.search);
+router.get('/search', authMiddleWare.isAuth, controller.search);
 
-router.get('/create', controller.create);
+router.post('/create', authMiddleWare.isAuth, validate.postCreate, controller.postCreate);
 
-router.post('/create', validate.postCreate, controller.postCreate);
-
-router.get('/:id', controller.getUser);
-
+router.get('/:id', authMiddleWare.isAuth, controller.getUser);
 
 module.exports = router;
