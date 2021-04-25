@@ -5,14 +5,21 @@ const jwt = require("jsonwebtoken");
   * @param secretSignature 
   * @param tokenLife 
   */
-let generateToken = (user, secretSignature, tokenLife) => {
-    const userData = {
-        id: user.id,
-        name: user.name,
+let generateToken = (staff, secretSignature, tokenLife) => {
+    const staffData = {
+        id: staff.id,
+        firstname: staff.firstname,
+        lastname: staff.lastname,
+        isManager: staff.is_manager,
+        gender: staff.gender,
+        email: staff.email,
+        status: staff.status,
+        department: staff.department,
+        departmentName: staff.department_name
     }
     // Thực hiện ký và tạo token
     return jwt.sign(
-        userData,
+        staffData,
         secretSignature,
         {
             algorithm: "HS256",

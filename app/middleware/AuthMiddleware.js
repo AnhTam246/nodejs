@@ -9,8 +9,7 @@ const isAuth = (req, res, next) => {
             // Decode
             const decoded = jwtHelper.verifyToken(tokenFromClient, accessTokenSecret);
             // Save token
-            // req.jwtDecoded = decoded;
-            res.locals.user = decoded;
+            res.locals.staff = decoded;
 
             next();
         } catch (error) {
