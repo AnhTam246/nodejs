@@ -1,4 +1,4 @@
-const connection = require('../../config')
+const db = require('../models/database')
 // const jwt = require("jsonwebtoken");
 const dotenv = require('dotenv');
 
@@ -17,7 +17,7 @@ process.env.TOKEN_SECRET;
 const postLogin = (req, res) => {
     try {
         var sql = "SELECT * FROM users WHERE name = ? AND password = ?";
-        connection.query(sql, [req.body.name, req.body.password], function(err, results) {
+        db.query(sql, [req.body.name, req.body.password], function(err, results) {
             if (err) throw err;
 
             let responseHandle = {

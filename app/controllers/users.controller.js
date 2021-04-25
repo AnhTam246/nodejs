@@ -1,73 +1,87 @@
+//Example
 const userModel = require('../models/users.model');
 
-const index = (req, res) => {
-    userModel.list(function(err, response) {
-        if (err) throw err;
+const index = async (req, res) => {
+    try {
+        let users = await userModel.list();
+
         let responseHandle = {
-            data: response,
+            data: users,
             message: "Request Success",
             status: 200,
             isSuccess: true
         }
+
         res.send(responseHandle);
-    });
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500);
+    }
 }
 
-const search = (req, res) => {
-    let name = req.query.name;
-    userModel.listSearch(name, function(err, response) {
-        if (err) throw err;
+const search = async (req, res) => {
+    try {
+        let name = req.query.name;
+
+        let users = await userModel.listSearch(name);
+
         let responseHandle = {
-            data: response,
+            data: users,
             message: "Request Success",
             status: 200,
             isSuccess: true
         }
+
         res.send(responseHandle);
-    });
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500);
+    }
 }
 
-const postCreate = (req, res) => {
-    let params = [
-        req.body.name,
-        req.body.age,
-        req.body.password
-    ];
+const postCreate = async (req, res) => {
+    try {
+        let params = [
+            req.body.name,
+            req.body.age,
+            req.body.password
+        ];
 
-    //Insert a record in the "users" table:
-    userModel.postCreate(params, function(err, response) {
-        if (err) throw err;
+        let user_insert = await userModel.postCreate(params);
+
         let responseHandle = {
-            data: response.insertId,
+            data: user_insert.insertId,
             message: "Create Success",
             status: 200,
             isSuccess: true
         }
-        console.log(responseHandle);
-        res.send(responseHandle);
-    });
+        
+        res.send(responseHandle);    
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500);
+    }
 };
 
-const getUser = (req, res) => {
+const getUser = async (req, res) => {
     let id = req.params.id;
 
-    userModel.getUserById(id, function(err, response) {
-        if (err) throw err;
-        let responseHandle = {
-            data: response,
-            message: "Request Success",
-            status: 200,
-            isSuccess: true
-        }
+    let user = await userModel.getUserById(id);
 
-        if(!response) {
-            responseHandle.data = "Can't find id";
-            responseHandle.message = "Invalid id";
-            responseHandle.isSuccess = false;
-        }
+    let responseHandle = {
+        data: user,
+        message: "Request Success",
+        status: 200,
+        isSuccess: true
+    }
 
-        res.send(responseHandle);
-    });
+    if(!user) {
+        responseHandle.data = "Can't find id";
+        responseHandle.message = "Invalid id";
+        responseHandle.isSuccess = false;
+    }
+
+    res.send(responseHandle);
 };
 
 module.exports = {

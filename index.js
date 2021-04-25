@@ -6,16 +6,14 @@ const authRoute = require('./app/routes/auth.route')
 app.use(express.json()) // for parsing application/json
 app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
-const port = 8787;
-
-app.listen(port, () => {
-    console.log("Server listening port " + port)
+app.listen(process.env.PORT, () => {
+    console.log("Server listening port " + process.env.PORT)
 });
 
-app.set('view engine', 'pug')
-app.set('views', './views')
-
+//API
+//Example
 app.use('/users', usersRoute)
+
 app.use('/auth', authRoute)
 
 app.get('/', (req, res) => {
