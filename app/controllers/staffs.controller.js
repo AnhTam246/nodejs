@@ -53,16 +53,37 @@ const getStaffLogin = async (req, res) => {
     }
 }
 
-// const fetchPagination = async (req, res) => {
-//     try {
-        
-//     } catch (error) {
-        
-//     }
-// }
+const fetchPagination = async (req, res) => {
+    try {
+        let page = parseInt(req.query.page);
+        let params = {
+            'department_name': req.query.department_name
+        }
+            
+        let staffs = await staffModel.fetchPagination(page, params);
+        let total = await staffModel.getCountTotal();
+        let result = {
+            staffs: staffs,
+            total: total
+        }
+
+        let responseHandle = {
+            data: result,
+            message: "Request Success",
+            status: 200,
+            isSuccess: true
+        }
+
+        res.send(responseHandle);
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500);
+    }
+}
 
 module.exports = {
     getAll: getAll,
     getOne: getOne,
-    getStaffLogin: getStaffLogin
+    getStaffLogin: getStaffLogin,
+    fetchPagination: fetchPagination
 };

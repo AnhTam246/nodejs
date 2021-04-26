@@ -8,6 +8,8 @@ const authMiddleWare = require('../middleware/AuthMiddleware')
 
 router.get('/', authMiddleWare.isAuth, staffController.getAll);
 
+router.get('/fetch-pagination', authMiddleWare.isAuth, staffController.fetchPagination);
+
 router.get('/get-staff-login', authMiddleWare.isAuth, staffController.getStaffLogin);
 
 router.get('/:id', authMiddleWare.isAuth, staffController.getOne);
