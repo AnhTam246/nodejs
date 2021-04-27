@@ -7,7 +7,7 @@ const authMiddleWare = require('../middleware/AuthMiddleware');
 
 router.get('/list-special-date', authMiddleWare.isAuth, specialDateController.getListSpecialDate);
 
-router.post('/create', authMiddleWare.isAuth, specialDateController.create);
+router.post('/create', authMiddleWare.isAuth, specialDateController.createSpecialDate);
 
 router.put('/update', authMiddleWare.isAuth, specialDateController.updateSpecialDate);
 

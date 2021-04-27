@@ -17,7 +17,7 @@ const getListSpecialDate = (date) => {
     });
 }
 
-const create = (params) => {
+const createSpecialDate = (params) => {
     return new Promise((resolve, reject) => {
         let sql = "";
         if(params[3] == "1") {
@@ -150,7 +150,7 @@ const saveTimeSpecial = (params) => {
 
 module.exports = {
     getListSpecialDate: getListSpecialDate,
-    create: create,
+    createSpecialDate: createSpecialDate,
     updateSpecialDate: updateSpecialDate,
     deleteSpecialDate: deleteSpecialDate,
     detailSpecialDate: detailSpecialDate,

@@ -19,7 +19,7 @@ const getListSpecialDate = async (req, res) => {
     }
 }
 
-const create = async (req, res) => {
+const createSpecialDate = async (req, res) => {
     try {
         //Create Special Date
         let params = [
@@ -37,7 +37,7 @@ const create = async (req, res) => {
             params.push(req.body.string_staff_ot);
         }
         
-        let specialDateInsert = await specialDateModel.create(params);
+        let specialDateInsert = await specialDateModel.createSpecialDate(params);
 
         let responseHandle = {
             data: specialDateInsert,
@@ -183,7 +183,7 @@ const saveTimeSpecial = async (req, res) => {
                 parseInt(timeSpecial.multiply),
                 timeSpecial.day_create
             ];
-            
+
             await specialDateModel.saveTimeSpecial(params);
         }
         
@@ -202,7 +202,7 @@ const saveTimeSpecial = async (req, res) => {
 
 module.exports = {
     getListSpecialDate: getListSpecialDate,
-    create: create,
+    createSpecialDate: createSpecialDate,
     updateSpecialDate: updateSpecialDate,
     deleteSpecialDate: deleteSpecialDate,
     detailSpecialDate: detailSpecialDate,
