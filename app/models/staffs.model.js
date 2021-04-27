@@ -70,10 +70,24 @@ const getCountTotal = () => {
     });
 }
 
+const findStaffInDepartment = (department) => {
+    return new Promise((resolve, reject) => {
+        let sql = "SELECT * FROM staff WHERE department = ?";
+
+        db.query(sql, department, (err, results) => {
+            if(err) return reject(err);
+
+            console.log('Staffs in department : ', results);
+            return resolve(results);
+        });
+    })
+} 
+
 
 module.exports = {
     getAll: getAll,
     getOne: getOne,
     fetchPagination: fetchPagination,
-    getCountTotal: getCountTotal
+    getCountTotal: getCountTotal,
+    findStaffInDepartment: findStaffInDepartment
 };

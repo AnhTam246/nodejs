@@ -4,14 +4,9 @@ const getListSpecialDate = async (req, res) => {
     try {
         let date = req.query.special_date_from;
         let listSpecialDate = await specialDateModel.getListSpecialDate(date);
-        let results = listSpecialDate.map(object => {
-            object.day_special_from = object.day_special_from.toISOString().substring(0, 10);
-            object.day_special_to = object.day_special_to.toISOString().substring(0, 10);
-            return object;
-        });
 
         let responseHandle = {
-            data: results,
+            data: listSpecialDate,
             message: "Request Success",
             status: 200,
             isSuccess: true
@@ -110,9 +105,56 @@ const deleteSpecialDate = async (req, res) => {
     }
 }
 
+const detailSpecialDate = async (req, res) => {
+    try {
+        //Delete Special Date
+        let id = req.params.id;
+        
+        let specialDate = await specialDateModel.detailSpecialDate(id);
+
+        let responseHandle = {
+            data: specialDate,
+            message: "Request Success",
+            status: 200,
+            isSuccess: true
+        }
+
+        res.send(responseHandle);
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500);
+    }
+}
+
+const getListRequestOT = async (req, res) => {
+    try {
+        let params = {
+            specialDateFrom: req.query.special_date_from,
+            staffRequest: req.query.staff_request,
+            departmentRequest: req.query.department_request
+        };
+
+        let listRequestOT = await specialDateModel.getListRequestOT(params);
+        
+        let responseHandle = {
+            data: listRequestOT,
+            message: "Request Success",
+            status: 200,
+            isSuccess: true
+        }
+
+        res.send(responseHandle);
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500);
+    }
+}
+
 module.exports = {
     getListSpecialDate: getListSpecialDate,
     create: create,
     updateSpecialDate: updateSpecialDate,
-    deleteSpecialDate: deleteSpecialDate
+    deleteSpecialDate: deleteSpecialDate,
+    detailSpecialDate: detailSpecialDate,
+    getListRequestOT: getListRequestOT
 };

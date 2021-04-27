@@ -13,4 +13,8 @@ router.put('/update', authMiddleWare.isAuth, specialDateController.updateSpecial
 
 router.delete('/delete', authMiddleWare.isAuth, specialDateController.deleteSpecialDate);
 
+router.get('/list-request-ot', authMiddleWare.isAuth, specialDateController.getListRequestOT);
+
+router.get('/detail-special-date/:id', authMiddleWare.isAuth, specialDateController.detailSpecialDate);
+
 module.exports = router;

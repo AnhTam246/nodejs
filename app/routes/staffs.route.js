@@ -12,6 +12,8 @@ router.get('/fetch-pagination', authMiddleWare.isAuth, staffController.fetchPagi
 
 router.get('/get-staff-login', authMiddleWare.isAuth, staffController.getStaffLogin);
 
+router.get('/find-staff-department/:department', authMiddleWare.isAuth, staffController.findStaffInDepartment);
+
 router.get('/:id', authMiddleWare.isAuth, staffController.getOne);
 
 

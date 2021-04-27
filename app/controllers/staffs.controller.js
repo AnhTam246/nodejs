@@ -81,9 +81,31 @@ const fetchPagination = async (req, res) => {
     }
 }
 
+const findStaffInDepartment = async (req, res) => {
+    try {
+        //Delete Special Date
+        let department = req.params.department;
+        
+        let staffs = await staffModel.findStaffInDepartment(department);
+
+        let responseHandle = {
+            data: staffs,
+            message: "Request Success",
+            status: 200,
+            isSuccess: true
+        }
+
+        res.send(responseHandle);
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500);
+    }
+}
+
 module.exports = {
     getAll: getAll,
     getOne: getOne,
     getStaffLogin: getStaffLogin,
-    fetchPagination: fetchPagination
+    fetchPagination: fetchPagination,
+    findStaffInDepartment: findStaffInDepartment
 };

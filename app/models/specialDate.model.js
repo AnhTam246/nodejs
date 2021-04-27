@@ -3,8 +3,8 @@ const db = require('./database')
 const getListSpecialDate = (date) => {
     return new Promise((resolve, reject) => {
         let sql = "SELECT sd.*, ts.id AS detail_id "
-                + "FROM hr.`special_date` AS sd "
-                + "LEFT JOIN `time_special` AS ts ON sd.`id` = ts.`special_date_id` "
+                + "FROM hr.special_date AS sd "
+                + "LEFT JOIN time_special AS ts ON sd.id = ts.special_date_id "
                 + "WHERE DATE_FORMAT(sd.day_special_from, '%Y') = DATE_FORMAT(?, '%Y') "
                 + "GROUP BY sd.id";
 
@@ -59,7 +59,6 @@ const updateSpecialDate = (typeDay ,params) => {
 
 const deleteSpecialDate = (id) => {
     return new Promise((resolve, reject) => {
-        console.log(id);
         let sql = "DELETE FROM special_date WHERE id = ?";
 
         db.query(sql, id, (err, results) => {
@@ -72,9 +71,55 @@ const deleteSpecialDate = (id) => {
     });
 }
 
+const detailSpecialDate = (id) => {
+    return new Promise((resolve, reject) => {
+        let sql = "SELECT * FROM special_date WHERE id = ?";
+
+        db.query(sql, id, (err, results) => {
+            if(err) return reject(err);
+
+            console.log("Special Date: ", results[0]);
+
+            return resolve(results[0]);
+        });
+    });
+}
+
+const getListRequestOT = (params) => {
+    return new Promise((resolve, reject) => {
+        console.log(params);
+        let date = params.specialDateFrom;
+        let preSelect = "SELECT sd.id, sd.day_special_from, sd.day_special_to, sd.note, sd.type_day, sd.is_approved, sd.staff_request, sd.department_request, sd.staff_ot, "
+                            + "CONCAT(s.firstname, ' ', s.lastname) AS full_name_staff_request, s.code, "
+                            + "d.name_vn AS name_department_request "
+                        + "FROM hr.special_date AS sd "
+                        + "LEFT JOIN staff AS s ON sd.staff_request = s.id "
+                        + "LEFT JOIN department AS d ON sd.department_request = d.id "
+                        + "WHERE DATE_FORMAT(sd.day_special_from, '%Y') = DATE_FORMAT(?, '%Y') ";
+
+        let where = "";
+        if(params.staffRequest != 7) {
+            where = "AND sd.department_request = " + params.departmentRequest + " OR sd.type_day = 1 ";
+        }
+
+        let subSelect = "order by sd.day_special_to";
+
+        let sql = preSelect + where + subSelect;
+
+        db.query(sql, date, (err, results) => {
+            if(err) return reject(err);
+
+            console.log('list special date : ', results);
+            return resolve(results);
+        });
+    });
+}
+
 module.exports = {
     getListSpecialDate: getListSpecialDate,
     create: create,
     updateSpecialDate: updateSpecialDate,
-    deleteSpecialDate: deleteSpecialDate
+    deleteSpecialDate: deleteSpecialDate,
+    detailSpecialDate: detailSpecialDate,
+    getListRequestOT: getListRequestOT
 };
