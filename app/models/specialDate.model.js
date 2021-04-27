@@ -87,7 +87,6 @@ const detailSpecialDate = (id) => {
 
 const getListRequestOT = (params) => {
     return new Promise((resolve, reject) => {
-        console.log(params);
         let date = params.specialDateFrom;
         let preSelect = "SELECT sd.id, sd.day_special_from, sd.day_special_to, sd.note, sd.type_day, sd.is_approved, sd.staff_request, sd.department_request, sd.staff_ot, "
                             + "CONCAT(s.firstname, ' ', s.lastname) AS full_name_staff_request, s.code, "
@@ -115,11 +114,47 @@ const getListRequestOT = (params) => {
     });
 }
 
+const getListTimeSpecial = (idSpecialDate) => {
+    return new Promise((resolve, reject) => {
+        let sql = "SELECT ts.id, ts.staff_id, ts.special_date_id, ts.day_time_special, ts.number_time, ts.multiply, ts.date_create, sd.day_special_to, sd.day_special_from, sd.note, "
+                            + "CONCAT(s.firstname, ' ', s.lastname) AS full_name, s.is_manager, "
+                            + "d.name_vn AS department_name "
+                        + "FROM time_special AS ts "
+                        + "LEFT JOIN special_date AS sd ON ts.special_date_id = sd.id "
+                        + "LEFT JOIN staff AS s ON ts.staff_id = s.id "
+                        + "LEFT JOIN department AS d ON s.department = d.id "
+                        + "WHERE ts.special_date_id = ? "
+                        + "ORDER BY ts.day_time_special";
+
+        db.query(sql, idSpecialDate, (err, results) => {
+            if(err) return reject(err);
+
+            console.log('list time special : ', results);
+            return resolve(results);
+        });
+    });
+}
+
+const saveTimeSpecial = (params) => {
+    return new Promise((resolve, reject) => {
+        let sql = "INSERT INTO time_special (staff_id, special_date_id, day_time_special, number_time, multiply, date_create) VALUES (?, ?, ?, ?, ?, ?)";
+
+        db.query(sql, params, (err, results) => {
+            if(err) return reject(err);
+
+            console.log('Inserted 1 record Time Special!');
+            return resolve(results);
+        });
+    });
+}
+
 module.exports = {
     getListSpecialDate: getListSpecialDate,
     create: create,
     updateSpecialDate: updateSpecialDate,
     deleteSpecialDate: deleteSpecialDate,
     detailSpecialDate: detailSpecialDate,
-    getListRequestOT: getListRequestOT
+    getListRequestOT: getListRequestOT,
+    getListTimeSpecial: getListTimeSpecial,
+    saveTimeSpecial: saveTimeSpecial
 };

@@ -150,11 +150,63 @@ const getListRequestOT = async (req, res) => {
     }
 }
 
+const getListTimeSpecial = async (req, res) => {
+    try {
+        let idSpecialDate = req.query.special_date_id;
+
+        let listTimeSpecial = await specialDateModel.getListTimeSpecial(idSpecialDate);
+        
+        let responseHandle = {
+            data: listTimeSpecial,
+            message: "Request Success",
+            status: 200,
+            isSuccess: true
+        }
+
+        res.send(responseHandle);
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500);
+    }
+}
+
+const saveTimeSpecial = async (req, res) => {
+    try {
+        let listTimeSpecial = req.body.list_time_special;
+
+        for(timeSpecial of listTimeSpecial) {
+            let params = [
+                parseInt(timeSpecial.staff_id),
+                timeSpecial.special_date_id,
+                timeSpecial.day_time_special,
+                parseInt(timeSpecial.number_time),
+                parseInt(timeSpecial.multiply),
+                timeSpecial.day_create
+            ];
+            
+            await specialDateModel.saveTimeSpecial(params);
+        }
+        
+        let responseHandle = {
+            message: "Save Time Special Success",
+            status: 200,
+            isSuccess: true
+        }
+
+        res.send(responseHandle);
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500);
+    }
+}
+
 module.exports = {
     getListSpecialDate: getListSpecialDate,
     create: create,
     updateSpecialDate: updateSpecialDate,
     deleteSpecialDate: deleteSpecialDate,
     detailSpecialDate: detailSpecialDate,
-    getListRequestOT: getListRequestOT
+    getListRequestOT: getListRequestOT,
+    getListTimeSpecial: getListTimeSpecial,
+    saveTimeSpecial: saveTimeSpecial
 };

@@ -15,6 +15,10 @@ router.delete('/delete', authMiddleWare.isAuth, specialDateController.deleteSpec
 
 router.get('/list-request-ot', authMiddleWare.isAuth, specialDateController.getListRequestOT);
 
+router.get('/list-time-special', authMiddleWare.isAuth, specialDateController.getListTimeSpecial);
+
+router.post('/save-time-special', authMiddleWare.isAuth, specialDateController.saveTimeSpecial);
+
 router.get('/detail-special-date/:id', authMiddleWare.isAuth, specialDateController.detailSpecialDate);
 
 module.exports = router;
