@@ -46,7 +46,7 @@ const getStaffOffDateMonth = () => {
         db.query(sql, (err, results) => {
             if(err) return reject(err);
 
-            console.log('staff offdate month : ', results[0][0]);
+            console.log('staff off date month : ', results[0][0]);
             return resolve(results[0][0]);
         });
     });

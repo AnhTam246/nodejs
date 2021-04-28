@@ -9,10 +9,10 @@ const getListSpecialDate = (date) => {
                 + "GROUP BY sd.id";
 
         db.query(sql, date, (err, results) => {
-            if(err) return reject(err);
+            if(err) reject(err);
 
-            console.log('list special date : ', results);
-            return resolve(results);
+            //console.log('list special date : ', results);
+            resolve(results);
         });
     });
 }

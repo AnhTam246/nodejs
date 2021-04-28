@@ -14,7 +14,7 @@ const isAuth = (req, res, next) => {
             next();
         } catch (error) {
             console.log(error);
-            // Nếu giải mã gặp lỗi: Không đúng, hết hạn...etc:
+            // Token error
             return res.status(401).json({
                 message: 'Unauthorized.',
             });

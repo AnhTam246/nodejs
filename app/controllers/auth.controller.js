@@ -4,9 +4,9 @@ const db = require('../models/database')
 const dotenv = require('dotenv');
 
 const jwtHelper = require("../helpers/jwt.helper");
-// Thời gian sống của token
+// Time token
 const accessTokenLife = process.env.TOKEN_LIFE || "2h";
-// Mã secretKey này phải được bảo mật tuyệt đối, các bạn có thể lưu vào biến môi trường hoặc file
+// Secret Key
 const accessTokenSecret = process.env.TOKEN_SECRET || "09f26e402586e2faa8da4c98a35f1b20d6b033c60";
 
 // get config vars
