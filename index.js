@@ -6,6 +6,7 @@ const staffsRoute = require('./app/routes/staffs.route');
 const dashboardRoute = require('./app/routes/dashboard.route');
 const specialDateRoute = require('./app/routes/specialDate.route');
 const productRoute = require('./app/routes/products.route');
+const cors = require('cors');
 
 app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
@@ -14,6 +15,8 @@ app.listen(process.env.PORT, () => {
     console.log("Server listening port " + process.env.PORT)
 });
 
+//Set up cor
+app.use(cors());
 //API
 //Example
 app.use('/users', usersRoute)

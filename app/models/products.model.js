@@ -7,7 +7,6 @@ const getAll = () => {
         db.query(sql, (err, results) => {
             if(err) return reject(err);
 
-            console.log('products : ', results);
             return resolve(results);
         });
     });
