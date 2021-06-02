@@ -47,10 +47,10 @@ const postCreate = async (req, res) => {
             req.body.password
         ];
 
-        let user_insert = await userModel.postCreate(params);
+        let userInsert = await userModel.postCreate(params);
 
         let responseHandle = {
-            data: user_insert.insertId,
+            data: userInsert.insertId,
             message: "Create Success",
             status: 200,
             isSuccess: true
